@@ -1,0 +1,1311 @@
+/* =========================
+   RESET (мягкий, безопасный)
+========================= */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* =========================
+   VARIABLES / THEME
+========================= */
+:root {
+    --bg-main: #1a1f26;
+    --bg-panel: #0c0f12;
+    --bg-card: #0f1318;
+    --bg-input: #1a1f26;
+
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+
+    --accent: #2aa7ff;
+    --accent-soft: rgba(42, 167, 255, 0.15);
+
+    --border: rgba(255, 255, 255, 0.08);
+    --radius: 14px;
+}
+
+/* =========================
+   BASE
+========================= */
+body {
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-main);
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+/* =========================
+   HEADER
+========================= */
+header {
+    background: linear-gradient(
+        180deg,
+        rgba(12, 15, 18, 0.95),
+        rgba(12, 15, 18, 0.85)
+    );
+    border-bottom: 1px solid var(--border);
+}
+
+.header,
+.header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Логотип */
+.header__logo,
+.logo {
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+}
+
+/* =========================
+   SEARCH
+========================= */
+.header input[type="search"],
+.header input[type="text"] {
+    width: 100%;
+    max-width: 420px;
+
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    padding: 10px 16px;
+    color: var(--text-main);
+
+    outline: none;
+}
+
+.header input::placeholder {
+    color: var(--text-muted);
+}
+
+/* =========================
+   HEADER ACTIONS
+========================= */
+.header__actions,
+.header .actions {
+    display: flex;
+    gap: 12px;
+}
+
+button,
+.button {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+button:hover,
+.button:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* Акцентные кнопки */
+.button--primary,
+button.primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: transparent;
+}
+
+.button--primary:hover {
+    opacity: 0.9;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+}
+
+/* =========================
+   POST CARD
+========================= */
+.post,
+.post-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    padding: 16px 18px;
+    margin-bottom: 16px;
+}
+
+/* Автор */
+.post__author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+/* Текст поста */
+.post__content {
+    font-size: 15px;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+/* =========================
+   POST ACTIONS
+========================= */
+.post__actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.post__actions button {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+}
+
+/* =========================
+   COMMENTS
+========================= */
+.comments {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.comment {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+
+    font-size: 14px;
+}
+
+.comment__author {
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+
+.comment__text {
+    color: var(--text-main);
+}
+
+/* =========================
+   COMMENT INPUT
+========================= */
+.comment-form {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.comment-form input {
+    flex: 1;
+
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    padding: 10px 14px;
+    color: var(--text-main);
+}
+
+/* =========================
+   DROPDOWN (темы)
+========================= */
+.dropdown,
+.menu {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.dropdown a {
+    display: block;
+    padding: 10px 14px;
+    color: var(--text-main);
+    text-decoration: none;
+}
+
+.dropdown a:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+/* =========================
+   LINKS
+========================= */
+a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   HEADER FIX (HORIZONTAL)
+========================= */
+
+header {
+    width: 100%;
+    background: #0c0f12;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* основной контейнер шапки */
+header > div,
+.header,
+.header__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* логотип */
+header h1,
+header .logo,
+header a:first-child {
+    font-size: 20px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* блок "Темы" */
+header nav,
+header .topics {
+    display: flex;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+/* поиск — по центру */
+header form,
+header input[type="search"],
+header input[type="text"] {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 360px;
+    width: 100%;
+}
+
+/* кнопки справа */
+header .auth,
+header .actions,
+header .buttons {
+    display: flex;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+/* =========================
+   NAVIGATION (TAILWIND FIX)
+========================= */
+
+nav {
+    background: #0c0f12;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    width: 100%;
+}
+
+/* container */
+nav > div {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* main bar */
+nav .h-16,
+nav .flex.justify-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+/* left group */
+nav .flex > .flex {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* logo */
+.header-logo a {
+    font-size: 20px;
+    font-weight: 700;
+    color: #e5e7eb;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* sidebar topics (INLINE, NOT COLUMN) */
+.sidebar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar h4 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+    margin: 0;
+}
+
+.sidebar a {
+    color: #2aa7ff;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* links */
+nav a {
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* search */
+nav input[type="text"] {
+    background: #1a1f26;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: #e5e7eb;
+    width: 260px;
+}
+
+/* buttons */
+nav .btn,
+nav button {
+    background: #1a1f26;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 6px 14px;
+    color: #e5e7eb;
+    cursor: pointer;
+}
+
+/* auth area right */
+nav > div > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* responsive OFF (desktop only for now) */
+@media (max-width: 640px) {
+    .sm\:flex {
+        display: none !important;
+    }
+}
+
+/* =========================
+   TAILWIND hidden FIX
+========================= */
+
+/* отменяем hidden */
+.hidden {
+    display: flex !important;
+}
+
+/* основной навигационный блок */
+nav .hidden.space-x-8 {
+    display: flex !important;
+    align-items: center;
+    gap: 16px;
+}
+
+/* правый блок (auth / guest) */
+nav .hidden.sm\:flex {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ===== HIDE BREEZE MOBILE MENU ON DESKTOP ===== */
+
+/* скрываем responsive-меню */
+nav .sm\:hidden {
+    display: none !important;
+}
+
+/* =========================
+   HEADER SPACING FIX
+========================= */
+
+/* блок с темами */
+nav aside {
+    margin-right: 20px; /* ← отодвигаем темы от поиска */
+}
+
+/* поле поиска */
+nav input[type="text"] {
+    margin-left: auto;  /* ← толкаем поиск к центру */
+    margin-right: auto;
+}
+
+/* кнопка "Создать" */
+nav a[href*="create"] {
+    margin-left: 320px;
+}
+
+/* отлепить "Темы" от "Главная" */
+nav aside {
+    margin-left: 24px;
+}
+
+
+/* =========================
+   ISOLATE BREEZE AUTH PAGES
+========================= */
+
+/* полностью сбрасываем влияние сайта */
+body.antialiased * {
+    box-sizing: border-box;
+}
+
+/* центр экрана */
+body.antialiased {
+    background: #1a1f26 !important;
+    min-height: 100vh;
+}
+
+/* главный контейнер Breeze */
+body.antialiased .min-h-screen {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 40px 16px !important;
+}
+
+/* карточка формы */
+body.antialiased .w-full.sm\:max-w-md {
+    width: 100% !important;
+    max-width: 420px !important;
+    background: #0f1318 !important;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 28px !important;
+}
+
+/* убираем влияние header/nav/layout */
+body.antialiased header,
+body.antialiased nav,
+body.antialiased .layout {
+    display: none !important;
+}
+
+/* логотип — нормальный, не гигантский */
+body.antialiased svg {
+    width: 0px !important;
+    height: 0x !important;
+    opacity: 0.6;
+}
+
+/* инпуты */
+body.antialiased input {
+    background: #1a1f26 !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    color: #e5e7eb !important;
+}
+
+/* кнопка логина */
+body.antialiased button {
+    background: #2aa7ff !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+/* =========================
+   FINAL BREEZE CENTER FIX
+========================= */
+
+/* min-h-screen должен быть реально на весь экран */
+body.antialiased .min-h-screen {
+    min-height: 100vh !important;
+}
+
+/* убираем стандартный отступ Breeze */
+body.antialiased .pt-6,
+body.antialiased .sm\:pt-0 {
+    padding-top: 0 !important;
+}
+
+/* центрируем строго по вертикали */
+body.antialiased .min-h-screen {
+    justify-content: center !important;
+}
+
+/* делаем карточку визуально крупнее */
+body.antialiased .w-full.sm\:max-w-md {
+    max-width: 460px !important;
+}
+
+/* =========================
+   AUTH — FIX BUTTON SPACING
+========================= */
+
+/* контейнер кнопки и ссылки */
+body.antialiased .flex.items-center.justify-end {
+    gap: 14px !important;          /* расстояние между элементами */
+    margin-top: 18px !important;   /* воздух сверху */
+}
+
+/* ссылка "Forgot your password?" */
+body.antialiased a[href*="password"] {
+    font-size: 14px;
+    color: #9ca3af;
+    text-decoration: none;
+}
+
+body.antialiased a[href*="password"]:hover {
+    color: #e5e7eb;
+    text-decoration: underline;
+}
+
+/* кнопка Log in */
+body.antialiased button[type="submit"] {
+    padding: 8px 18px !important;
+    border-radius: 999px;
+    font-size: 14px;
+}
+
+/* =========================
+   AUTH — FIX INPUT SPACING
+========================= */
+
+/* каждый блок поля (Email / Password / Remember) */
+body.antialiased form > div {
+    margin-bottom: 14px !important;
+}
+
+/* label */
+body.antialiased label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #9ca3af;
+}
+
+/* input */
+body.antialiased input[type="email"],
+body.antialiased input[type="password"],
+body.antialiased input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 999px;
+}
+
+/* блок Remember me */
+body.antialiased .block.mt-4 {
+    margin-top: 10px !important;
+}
+
+/* =========================
+   FIX PROFILE BUTTON
+========================= */
+
+/* кнопка профиля */
+nav button.inline-flex.items-center {
+    background: transparent !important;
+    border: 1px solid rgba(255,255,255,0.12) !important;
+    border-radius: 999px !important;
+
+    padding: 6px 12px !important;
+    height: auto !important;
+
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+
+    font-size: 14px !important;
+    color: #e5e7eb !important;
+}
+
+/* убираем круг */
+nav button.inline-flex.items-center::before,
+nav button.inline-flex.items-center::after {
+    display: none !important;
+}
+
+/* стрелка */
+nav button.inline-flex.items-center svg {
+    width: 14px;
+    height: 14px;
+    fill: #ffffff !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* =========================
+   PROFILE DROPDOWN
+========================= */
+
+/* контейнер dropdown */
+nav [x-show] {
+    position: absolute !important;
+    right: 0;
+    top: calc(100% + 8px);
+
+    background: #0f1318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+
+    min-width: 160px;
+    padding: 6px 0;
+
+    z-index: 1000;
+}
+
+/* пункты меню */
+nav [x-show] a {
+    display: block;
+    padding: 8px 14px;
+    font-size: 14px;
+    color: #e5e7eb;
+}
+
+/* hover */
+nav [x-show] a:hover {
+    background: rgba(255,255,255,0.06);
+}
+
+/* родитель кнопки */
+nav .sm\:flex.sm\:items-center.sm\:ms-6 {
+    position: relative !important;
+}
+
+/* =========================
+   PROFILE PAGE (SAFE, CSS ONLY)
+   Target: profile/layout.blade.php
+========================= */
+
+/* основной контейнер профиля */
+.container.col-md-8 {
+    max-width: 900px;
+    margin: 0 auto;
+    padding-bottom: 80px;
+}
+
+/* верхняя строка: ник + кнопка подписки */
+.container.col-md-8 > .d-flex.justify-content-between {
+    margin-bottom: 24px !important;
+}
+
+/* ник пользователя */
+.container.col-md-8 h3 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+    color: #e5e7eb;
+}
+
+/* кнопка подписки */
+.container.col-md-8 form button {
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 14px;
+}
+
+/* =========================
+   PROFILE TABS (Посты / Комменты / Лайки / Подписки)
+========================= */
+
+.container.col-md-8 > .mb-3 {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 28px !important;
+    flex-wrap: wrap;
+}
+
+/* все кнопки вкладок */
+.container.col-md-8 > .mb-3 .btn {
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 14px;
+    background: #1a1f26;
+    border: 1px solid rgba(255,255,255,.12);
+    color: #e5e7eb;
+}
+
+/* активная вкладка */
+.container.col-md-8 > .mb-3 .btn-primary {
+    background: #2aa7ff !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
+/* hover */
+.container.col-md-8 > .mb-3 .btn:hover {
+    background: rgba(255,255,255,.08);
+}
+
+/* =========================
+   PROFILE CONTENT (yield)
+========================= */
+
+/* заголовки внутри profile-content */
+.container.col-md-8 h1 {
+    font-size: 26px;
+    font-weight: 800;
+    margin: 0 0 18px;
+    color: #e5e7eb;
+}
+
+.container.col-md-8 h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 24px 0 14px;
+    color: #e5e7eb;
+}
+
+/* обычный текст */
+.container.col-md-8 p {
+    color: rgba(229,231,235,.85);
+    font-size: 15px;
+}
+
+/* разделитель */
+.container.col-md-8 hr {
+    border: none;
+    border-top: 1px solid rgba(255,255,255,.08);
+    margin: 20px 0;
+}
+
+/* =========================
+   USER POSTS (cards)
+   (div with inline border)
+========================= */
+
+.container.col-md-8 div[style*="border"] {
+    background: #0f1318;
+    border: 1px solid rgba(255,255,255,.10) !important;
+    border-radius: 16px;
+    padding: 18px 18px;
+    margin-bottom: 16px !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+/* заголовок поста */
+.container.col-md-8 div[style*="border"] h3 {
+    font-size: 18px;
+    font-weight: 750;
+    margin: 0 0 8px;
+    color: #2aa7ff;
+}
+
+/* текст поста */
+.container.col-md-8 div[style*="border"] p {
+    margin: 0 0 12px;
+    line-height: 1.55;
+    color: rgba(229,231,235,.85);
+}
+
+/* мета-информация */
+.container.col-md-8 div[style*="border"] small {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: rgba(229,231,235,.6);
+}
+
+/* PROFILE POST: bigger card + bigger padding (CSS only) */
+.container.col-md-8 > div[style]{
+  /* шире/больше прямоугольник */
+  width: 100%;
+  max-width: 820px;         /* можешь поставить 900px если хочешь шире */
+  
+  /* больше воздуха внутри */
+  padding: 28px 30px !important;
+
+  /* больше расстояние между карточками */
+  margin-bottom: 22px !important;
+}
+
+/* отступы текста внутри (на всякий случай, чтобы не прилипало) */
+.container.col-md-8 > div[style] h3{
+  margin: 0 0 12px !important;
+}
+
+.container.col-md-8 > div[style] p{
+  margin: 0 0 10px !important;
+  line-height: 1.6;
+}
+
+/* блок с кнопкой удаления */
+.container.col-md-8 > div[style] button {
+    display: inline-block;
+    margin-top: 18px;
+}
+
+/* =========================
+   PROFILE: ONLY DIVIDERS
+   (comments / likes)
+========================= */
+
+/* разделитель между карточками профиля */
+.container.col-md-8 > .card:not(:last-child) {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* убираем стандартную рамку карточек ТОЛЬКО в профиле */
+.container.col-md-8 > .card {
+    border: none;
+    background: transparent;
+}
+
+/* =========================
+   PROFILE — DELETE POST BUTTON FIX
+========================= */
+
+.container.col-md-8 .card {
+    background: #0f1318;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 16px;
+}
+
+.container.col-md-8 .card-body {
+    padding: 18px;
+}
+
+/* =========================
+   CREATE POST PAGE
+   (resources/views/posts/create.blade.php)
+========================= */
+
+/* центрируем форму */
+.layout .content > h1 + form {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* заголовок */
+.layout .content > h1 {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 24px;
+    color: #e5e7eb;
+}
+
+/* карточка формы */
+/* .layout .content form {
+    background: #0f1318;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 28px 30px 32px;
+} */
+
+/* блоки формы */
+.layout .content form > div {
+    margin-bottom: 22px;
+}
+
+/* label */
+.layout .content form label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #9ca3af;
+    margin-bottom: 8px;
+}
+
+/* input + textarea */
+.layout .content form input[type="text"],
+.layout .content form textarea {
+    width: 100%;
+    background: #20262f;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    color: #e5e7eb;
+    outline: none;
+}
+
+/* textarea */
+.layout .content form textarea {
+    resize: vertical;
+    min-height: 160px;
+    line-height: 1.6;
+}
+
+/* focus */
+.layout .content form input:focus,
+.layout .content form textarea:focus {
+    border-color: #2aa7ff;
+}
+
+/* =========================
+   TAGS
+========================= */
+
+.layout .content form > div:nth-child(2) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+}
+
+/* чекбокс + текст */
+.layout .content form input[type="checkbox"] {
+    accent-color: #2aa7ff;
+    margin-right: 6px;
+}
+
+/* label тега */
+.layout .content form > div:nth-child(2) label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #e5e7eb;
+    margin-bottom: 0;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================= */
+
+.layout .content form button[type="submit"] {
+    margin-top: 6px;
+    background: #2aa7ff;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.layout .content form button[type="submit"]:hover {
+    opacity: 0.9;
+}
+
+
+/* =========================
+   MAIN COMMENT FORM (POST)
+========================= */
+
+.comment-form textarea,
+form[action*="comments"] textarea {
+    min-height: 90px !important;
+    max-height: 140px;
+    font-size: 14px;
+    padding: 10px 12px !important;
+}
+
+/* кнопка отправки */
+.comment-form button,
+form[action*="comments"] button {
+    margin-top: 10px;
+    padding: 6px 14px !important;
+    font-size: 14px !important;
+}
+
+/* =========================
+   COMMENTS TREE (LADDER)
+========================= */
+
+/* базовый комментарий */
+.comment {
+    margin-top: 16px;
+    padding-left: 0;
+}
+
+/* вложенные комментарии */
+.comment .comment {
+    margin-left: 28px;
+    padding-left: 16px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+}
+
+/* текст комментария */
+.comment__text {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* форма ответа под комментом */
+.comment .comment-form textarea {
+    min-height: 70px !important;
+    font-size: 13px;
+    padding: 8px 10px !important;
+}
+
+/* кнопка ответа */
+.comment .comment-form button {
+    padding: 4px 12px !important;
+    font-size: 13px !important;
+}
+
+/* =========================
+   POST VIEW: REMOVE ACTION BOXES
+========================= */
+
+/* убираем большие боксы вокруг лайка и кнопок */
+.post__actions,
+.post__actions .post-card,
+.post__actions .card,
+form[action*="like"] {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 0 12px 0 !important;
+}
+
+/* кнопка лайка — компактная */
+form[action*="like"] button {
+    padding: 4px 12px !important;
+    font-size: 13px !important;
+    border-radius: 999px;
+}
+
+/* =========================
+   POST VIEW — COMMENTS FIX
+========================= */
+
+/* =========================
+   POST PAGE — COMMENTS ONLY
+   (posts.show)
+========================= */
+
+.posts-show .card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.posts-show .card-body {
+    padding: 0 !important;
+}
+
+
+/* отступ между комментариями */
+.card + .card {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+
+/* =========================
+   COMMENT HEADER
+========================= */
+
+
+/* ник */
+.comment-header strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+/* время */
+.comment-header small {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* =========================
+   DELETE BUTTON (INLINE, NO BOX)
+========================= */
+
+.comment-delete {
+    margin-left: auto;
+}
+
+.comment-delete button {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+
+    font-size: 12px;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.comment-delete button:hover {
+    color: #ef4444;
+    text-decoration: underline;
+}
+
+.comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* =========================
+   COMMENTS — FIX DELETE BUTTON BOX
+========================= */
+
+/* сам комментарий — без карточного эффекта */
+.comment,
+.mb-3 {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* header комментария */
+.comment-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+/* имя */
+.comment-header strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: #e5e7eb;
+}
+
+/* время */
+.comment-header small {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* форма удаления — ВАЖНО */
+.comment-delete {
+    margin-left: auto;          /* ← уводит кнопку вправо */
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+/* кнопка Удалить */
+.comment-delete button {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    font-size: 12px;
+    color: #ef4444;
+    cursor: pointer;
+}
+
+/* hover */
+.comment-delete button:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+}
+
+/* =========================
+   COMMENTS TITLE SPACING
+========================= */
+
+/* отступ между "Комментарии (N)" и первым комментарием */
+.comment-header:first-of-type {
+    margin-top: 16px;
+}
+
+/* форма комментария всегда в card.mb-4 перед блоком комментариев */
+.card.mb-4 + .card {
+    margin-top: 6px !important;
+}
+
+/* =========================
+   PROFILE — FIX DELETE POST BUTTON
+   (only profile page)
+========================= */
+
+/* форма удаления поста в профиле */
+.container.col-md-8 div[style*="border"] > form {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-top: 12px;
+}
+
+/* сама кнопка "Удалить пост" */
+.container.col-md-8 div[style*="border"] > form > button {
+    background: #2aa7ff !important;
+    border: none !important;
+    border-radius: 999px;
+    padding: 8px 18px;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+/* =========================
+   PROFILE — FORCE DIVIDERS (comments / likes)
+   Put this at VERY END of app.css
+========================= */
+
+.container.col-md-8 .card{
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* =========================
+   PROFILE — CLEAN DIVIDER (STRAIGHT LINE)
+========================= */
+
+.container.col-md-8 .card{
+  position: relative;
+  overflow: visible !important; /* важно */
+}
+
+.container.col-md-8 .card:not(:last-child)::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -12px;          /* расстояние от карточки */
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
