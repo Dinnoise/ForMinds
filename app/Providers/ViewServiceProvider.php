@@ -21,6 +21,9 @@ class ViewServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::share('tags', Tag::all());
+        // Запрос выполняется только при рендере, иначе artisan (в т.ч. migrate) падает на пустой БД
+        View::composer('*', function ($view) {
+            $view->with('tags', once(fn () => Tag::all()));
+        });
     }
 }

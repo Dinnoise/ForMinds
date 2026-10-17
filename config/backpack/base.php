@@ -113,7 +113,8 @@ return [
     'middleware_class' => [
         App\Http\Middleware\CheckIfAdmin::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        \Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
+        // Отключено: в backpack/crud 7.0.0 сравнивает сырой хэш пароля, а Laravel 12 хранит в сессии HMAC — админа сразу разлогинивает
+        // \Backpack\CRUD\app\Http\Middleware\AuthenticateSession::class,
         // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
     ],
 
