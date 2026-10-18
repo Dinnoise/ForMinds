@@ -23,7 +23,7 @@ class ViewServiceProvider extends ServiceProvider
     {
         // Запрос выполняется только при рендере, иначе artisan (в т.ч. migrate) падает на пустой БД
         View::composer('*', function ($view) {
-            $view->with('tags', once(fn () => Tag::all()));
+            $view->with('tags', once(fn () => Tag::withCount(['posts' => fn ($q) => $q->published()])->get()));
         });
     }
 }

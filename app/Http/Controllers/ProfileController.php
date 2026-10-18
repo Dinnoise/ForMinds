@@ -68,12 +68,24 @@ class ProfileController extends Controller
     {
         $user = Auth::user();
 
-        $posts = $user->posts()
+        $posts = $user->posts()->published()
             ->withCount(['likes', 'comments'])
             ->latest()
             ->get();
 
         return view('profile.me', compact('user', 'posts'));
+    }
+
+    public function myDrafts()
+    {
+        $user = Auth::user();
+
+        $drafts = $user->posts()->drafts()
+            ->with('tags')
+            ->latest('updated_at')
+            ->get();
+
+        return view('profile.drafts', compact('user', 'drafts'));
     }
 
     public function toggleSubscription(User $user)
@@ -135,7 +147,7 @@ class ProfileController extends Controller
     /** Профиль другого пользователя */
     public function show(User $user)
     {
-        $posts = $user->posts()
+        $posts = $user->posts()->published()
             ->withCount(['likes', 'comments'])
             ->latest()
             ->get();
@@ -145,7 +157,7 @@ class ProfileController extends Controller
 
     public function posts(User $user)
     {
-        $posts = $user->posts()
+        $posts = $user->posts()->published()
             ->withCount(['allComments', 'likes'])
             ->latest()
             ->get();

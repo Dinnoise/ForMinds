@@ -28,5 +28,10 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'role' => 'user',
         ]);
+
+        $this->call([
+            TagSeeder::class,
+            PostSeeder::class,
+        ]);
     }
 }

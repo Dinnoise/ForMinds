@@ -20,7 +20,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Post::with('user', 'tags');
+        $query = Post::published()->with('user', 'tags');
 
         if ($search = $request->input('q')) {
             $query->where(function ($q) use ($search) {
@@ -54,13 +54,19 @@ class PostController extends Controller
 {
     // создаём пост без тегов
     $post = auth()->user()->posts()->create([
-        'title' => $request->title,
-        'body' => $request->body,
+        'title' => $request->title ?? '',
+        'body' => $request->body ?? '',
+        'is_draft' => $request->isDraft(),
     ]);
 
     // прикрепляем теги, если они выбраны
     if ($request->has('tags')) {
         $post->tags()->sync($request->tags);
+    }
+
+    if ($post->is_draft) {
+        return redirect()->route('profile.me.drafts')
+            ->with('success', 'Черновик сохранён.');
     }
 
     /* редирект на страницу  поста */
@@ -74,6 +80,11 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        // черновик видит только автор
+        if ($post->is_draft && $post->user_id !== Auth::id()) {
+            abort(404);
+        }
+
         $post->load(['user', 'comments.user', 'tags', 'likes'])
             ->loadCount('likes');
 
@@ -82,6 +93,8 @@ class PostController extends Controller
 
     public function toggleLike(Post $post)
     {
+        abort_if($post->is_draft, 404);
+
         $user = auth()->user();
 
         $existingLike = $post->likes()
@@ -96,23 +109,93 @@ class PostController extends Controller
             ]);
         }
 
+        // AJAX-клик: страница не перезагружается, кнопку обновляет JS
+        if (request()->expectsJson()) {
+            return response()->json([
+                'liked' => ! $existingLike,
+                'count' => $post->likes()->count(),
+            ]);
+        }
+
         return redirect()->back();
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Редактирование черновика
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        $this->authorizeDraft($post);
+
+        return view('posts.edit', [
+            'post' => $post->load('tags'),
+            'tags' => Tag::all(),
+        ]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Сохранение черновика: остаётся черновиком или публикуется
      */
-    public function update(Request $request, string $id)
+    public function update(StorePostRequest $request, Post $post)
     {
-        //
+        $this->authorizeDraft($post);
+
+        $post->fill([
+            'title' => $request->title ?? '',
+            'body' => $request->body ?? '',
+        ]);
+
+        if (! $request->isDraft()) {
+            $this->markPublished($post);
+        }
+
+        $post->save();
+        $post->tags()->sync($request->tags ?? []);
+
+        if ($post->is_draft) {
+            return redirect()->route('profile.me.drafts')
+                ->with('success', 'Черновик сохранён.');
+        }
+
+        return redirect()->route('posts.show', $post)
+            ->with('success', 'Пост опубликован.');
+    }
+
+    /**
+     * Публикация черновика из списка черновиков
+     */
+    public function publish(Post $post)
+    {
+        $this->authorizeDraft($post);
+
+        // недописанный черновик отправляем дописывать
+        if (blank($post->title) || blank($post->body)) {
+            return redirect()->route('posts.edit', $post)
+                ->withErrors(['title' => 'Перед публикацией заполните заголовок и текст.']);
+        }
+
+        $this->markPublished($post);
+        $post->save();
+
+        return redirect()->route('posts.show', $post)
+            ->with('success', 'Пост опубликован.');
+    }
+
+    private function authorizeDraft(Post $post): void
+    {
+        if ($post->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // опубликованные посты пока не редактируются
+        abort_unless($post->is_draft, 404);
+    }
+
+    private function markPublished(Post $post): void
+    {
+        $post->is_draft = false;
+        // дата поста — момент публикации, чтобы он попал наверх ленты
+        $post->created_at = now();
     }
 
     /**
@@ -126,6 +209,6 @@ class PostController extends Controller
 
     $post->delete();
 
-    return redirect()->route('profile.me');
+    return redirect()->route($post->is_draft ? 'profile.me.drafts' : 'profile.me');
 }
 }

@@ -36,6 +36,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/subscriptions', [ProfileController::class, 'mySubscriptions'])
         ->name('profile.me.subscriptions');
 
+    Route::get('/profile/drafts', [ProfileController::class, 'myDrafts'])
+        ->name('profile.me.drafts');
+
     Route::redirect('/profile', '/profile/posts');
 
     Route::patch('/profile', [ProfileController::class, 'update'])
@@ -56,8 +59,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
     ->name('comments.destroy');
 
+    // не /comments/...: в app.css есть стили по form[action*="comments"] для форм ответа
+    Route::post('/reactions/{comment}', [CommentController::class, 'toggleReaction'])
+    ->name('comments.react');
+
     Route::post('/posts/{post}/like', [PostController::class, 'toggleLike'])
         ->name('posts.toggle-like');
+
+    Route::post('/posts/{post}/publish', [PostController::class, 'publish'])
+        ->name('posts.publish');
 
     Route::post('/users/{user}/subscribe', [ProfileController::class, 'toggleSubscription'])
         ->name('profile.toggle-subscription');

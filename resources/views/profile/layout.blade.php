@@ -44,6 +44,10 @@
                class="btn btn-sm {{ request()->routeIs('profile.me.subscriptions') ? 'btn-primary' : 'btn-outline-primary' }}">
                 Подписки
             </a>
+            <a href="{{ route('profile.me.drafts') }}"
+               class="btn btn-sm {{ request()->routeIs('profile.me.drafts') ? 'btn-primary' : 'btn-outline-primary' }}">
+                Черновики
+            </a>
         @else
             <a href="{{ route('profile.show', $user) }}"
                class="btn btn-sm {{ request()->routeIs('profile.show') ? 'btn-primary' : 'btn-outline-primary' }}">

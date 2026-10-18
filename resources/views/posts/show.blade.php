@@ -24,10 +24,15 @@
                                 $liked = $user ? $post->likes->contains('user_id', $user->id) : false;
                             @endphp
 
-                            <form method="POST" action="{{ route('posts.toggle-like', $post) }}">
+                            <form method="POST" action="{{ route('posts.toggle-like', $post) }}" class="like-form">
                                 @csrf
-                                <button type="submit" class="btn btn-sm {{ $liked ? 'btn-primary' : 'btn-outline-primary' }}">
-                                    {{ $liked ? 'Убрать лайк' : 'Лайк' }} ({{ $post->likes_count }})
+                                <button type="submit" class="like-btn {{ $liked ? 'is-liked' : '' }}"
+                                        aria-pressed="{{ $liked ? 'true' : 'false' }}"
+                                        title="{{ $liked ? 'Убрать лайк' : 'Нравится' }}">
+                                    <svg class="like-btn__heart" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.4 2.9 4.5 6.6 4.5c2.1 0 3.6 1.1 4.4 2.5h2c.8-1.4 2.3-2.5 4.4-2.5 3.7 0 5.7 3.9 4.2 7.2C19.5 16.4 12 21 12 21z" />
+                                    </svg>
+                                    <span class="like-btn__count">{{ $post->likes_count }}</span>
                                 </button>
                             </form>
                         </div>

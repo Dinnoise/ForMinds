@@ -10,7 +10,7 @@ class TagController extends Controller
 {
     public function show(Tag $tag)
 {
-    $posts = $tag->posts()
+    $posts = $tag->posts()->published()
         ->with('user')
         ->latest()
         ->paginate(10);

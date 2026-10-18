@@ -12,23 +12,94 @@ html, body {
     padding: 0;
 }
 
+/* место под скроллбар резервируется всегда, чтобы страница не прыгала при открытии бокового меню */
+html {
+    scrollbar-gutter: stable;
+}
+
 /* =========================
    VARIABLES / THEME
 ========================= */
+/* Две темы на одних переменных. Светлая — по умолчанию, тёмная включается через <html data-theme="dark">
+   (переключатель в шапке, выбор хранится в localStorage) */
+
+/* Светлая: тёплая бумага + шалфейный акцент */
 :root {
-    --bg-main: #1a1f26;
-    --bg-panel: #0c0f12;
-    --bg-card: #0f1318;
-    --bg-input: #1a1f26;
+    color-scheme: light;
 
-    --text-main: #e5e7eb;
-    --text-muted: #9ca3af;
+    --bg-main: #f6f4ef;
+    --bg-panel: #ffffff;
+    --bg-card: #ffffff;
+    --bg-input: #f0ede6;
 
-    --accent: #2aa7ff;
-    --accent-soft: rgba(42, 167, 255, 0.15);
+    --text-main: #1f1d1a;
+    --text-soft: rgba(31, 29, 26, 0.85);
+    --text-faint: rgba(31, 29, 26, 0.6);
+    --text-muted: #6b665d;
 
-    --border: rgba(255, 255, 255, 0.08);
+    --accent: #2f7d57;
+    --accent-soft: rgba(47, 125, 87, 0.12);
+    --on-accent: #ffffff;
+
+    --like: #e0455a;
+    --like-soft: rgba(224, 69, 90, 0.1);
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, 0.07);
+    --danger-text: #b91c1c;
+
+    --border: rgba(60, 45, 30, 0.1);
+    --border-strong: rgba(60, 45, 30, 0.16);
+    --hover: rgba(60, 45, 30, 0.05);
+    --shadow-card: 0 4px 16px rgba(60, 45, 30, 0.06);
+    --shadow-panel: 8px 0 24px rgba(60, 45, 30, 0.12);
+    --overlay: rgba(30, 25, 20, 0.35);
     --radius: 14px;
+}
+
+/* Тёмная: тёплый графит + шалфейный акцент */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg-main: #1b1a18;
+    --bg-panel: #141412;
+    --bg-card: #23221f;
+    --bg-input: #2b2a26;
+
+    --text-main: #ece7df;
+    --text-soft: rgba(236, 231, 223, 0.85);
+    --text-faint: rgba(236, 231, 223, 0.6);
+    --text-muted: #a8a196;
+
+    --accent: #8cc4a4;
+    --accent-soft: rgba(140, 196, 164, 0.14);
+    --on-accent: #14201a;
+
+    --like: #f0727a;
+    --like-soft: rgba(240, 114, 122, 0.14);
+    --danger: #ef4444;
+    --danger-soft: rgba(239, 68, 68, 0.08);
+    --danger-text: #fca5a5;
+
+    --border: rgba(255, 245, 230, 0.08);
+    --border-strong: rgba(255, 245, 230, 0.13);
+    --hover: rgba(255, 245, 230, 0.06);
+    --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.25);
+    --shadow-panel: 8px 0 24px rgba(0, 0, 0, 0.4);
+    --overlay: rgba(0, 0, 0, 0.5);
+}
+
+/* плавная смена цветов при переключении темы */
+body,
+nav,
+.post,
+.card,
+.draft-card {
+    transition: background-color .2s ease, color .2s ease, border-color .2s ease;
+}
+
+::selection {
+    background: var(--accent-soft);
+    color: var(--text-main);
 }
 
 /* =========================
@@ -47,8 +118,8 @@ body {
 header {
     background: linear-gradient(
         180deg,
-        rgba(12, 15, 18, 0.95),
-        rgba(12, 15, 18, 0.85)
+        var(--bg-panel),
+        var(--bg-panel)
     );
     border-bottom: 1px solid var(--border);
 }
@@ -119,14 +190,14 @@ button,
 
 button:hover,
 .button:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--hover);
 }
 
 /* Акцентные кнопки */
 .button--primary,
 button.primary {
     background: var(--accent);
-    color: #fff;
+    color: var(--on-accent);
     border-color: transparent;
 }
 
@@ -151,6 +222,7 @@ main {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
 
     padding: 16px 18px;
     margin-bottom: 16px;
@@ -258,7 +330,7 @@ main {
 }
 
 .dropdown a:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: var(--hover);
 }
 
 /* =========================
@@ -279,8 +351,8 @@ a:hover {
 
 header {
     width: 100%;
-    background: #0c0f12;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
 }
 
 /* основной контейнер шапки */
@@ -337,8 +409,8 @@ header .buttons {
 ========================= */
 
 nav {
-    background: #0c0f12;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
     width: 100%;
 }
 
@@ -369,56 +441,36 @@ nav .flex > .flex {
 .header-logo a {
     font-size: 20px;
     font-weight: 700;
-    color: #e5e7eb;
+    color: var(--text-main);
     text-decoration: none;
     white-space: nowrap;
 }
 
-/* sidebar topics (INLINE, NOT COLUMN) */
-.sidebar {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.sidebar h4 {
-    font-size: 14px;
-    font-weight: 500;
-    color: #9ca3af;
-    margin: 0;
-}
-
-.sidebar a {
-    color: #2aa7ff;
-    text-decoration: none;
-    font-size: 14px;
-}
-
 /* links */
 nav a {
-    color: #e5e7eb;
+    color: var(--text-main);
     text-decoration: none;
     font-size: 14px;
 }
 
 /* search */
 nav input[type="text"] {
-    background: #1a1f26;
-    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
     border-radius: 999px;
     padding: 6px 14px;
-    color: #e5e7eb;
+    color: var(--text-main);
     width: 260px;
 }
 
 /* buttons */
 nav .btn,
 nav button {
-    background: #1a1f26;
-    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
     border-radius: 999px;
     padding: 6px 14px;
-    color: #e5e7eb;
+    color: var(--text-main);
     cursor: pointer;
 }
 
@@ -470,25 +522,222 @@ nav .sm\:hidden {
    HEADER SPACING FIX
 ========================= */
 
-/* блок с темами */
-nav aside {
-    margin-right: 20px; /* ← отодвигаем темы от поиска */
+/* левая группа занимает всё свободное место, "Создать" прижимается вправо к профилю */
+nav .flex.justify-between > .flex,
+nav .space-x-8 {
+    flex: 1;
+}
+
+nav .space-x-8 > a[href*="create"] {
+    margin-left: auto;
 }
 
 /* поле поиска */
 nav input[type="text"] {
-    margin-left: auto;  /* ← толкаем поиск к центру */
-    margin-right: auto;
-}
-
-/* кнопка "Создать" */
-nav a[href*="create"] {
-    margin-left: 320px;
-}
-
-/* отлепить "Темы" от "Главная" */
-nav aside {
     margin-left: 24px;
+}
+
+/* =========================
+   BURGER + SIDE MENU
+========================= */
+
+nav .burger-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    padding: 0 10px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid transparent;
+    transition: background .2s, border-color .2s;
+}
+
+nav .burger-btn:hover,
+nav .burger-btn.is-open {
+    background: var(--bg-input);
+    border-color: var(--border-strong);
+}
+
+nav .burger-btn span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    border-radius: 2px;
+    background: var(--text-main);
+    transition: transform .25s, opacity .2s;
+}
+
+nav .burger-btn.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+nav .burger-btn.is-open span:nth-child(2) { opacity: 0; }
+nav .burger-btn.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+nav > .side-menu-overlay {
+    position: fixed;
+    inset: 0;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+    background: var(--overlay);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .25s, visibility .25s;
+    z-index: 1100;
+}
+
+nav > .side-menu-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+nav .side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    max-width: 85vw;
+    margin: 0;
+    padding: 16px 12px;
+    overflow-y: auto;
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    box-shadow: var(--shadow-panel);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform .25s ease, visibility .25s;
+    z-index: 1200;
+}
+
+nav .side-menu.is-open {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+nav .side-menu__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px 12px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+nav .side-menu__title {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--text-muted);
+}
+
+nav .side-menu__close {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    font-size: 22px;
+    line-height: 1;
+    color: var(--text-muted);
+}
+
+nav .side-menu__close:hover {
+    background: var(--bg-input);
+    color: var(--text-main);
+}
+
+nav .side-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav .side-menu__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    font: inherit;
+    font-size: 15px;
+    color: var(--text-main);
+    text-align: left;
+    transition: background .15s;
+}
+
+nav .side-menu__item:hover,
+nav .side-menu__toggle.is-open {
+    background: var(--bg-input);
+}
+
+nav .side-menu__item.is-active {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+nav .side-menu__chevron {
+    width: 16px;
+    height: 16px;
+    color: var(--text-muted);
+    transition: transform .2s;
+}
+
+nav .side-menu__toggle.is-open .side-menu__chevron {
+    transform: rotate(90deg);
+}
+
+nav .side-menu__sub {
+    display: none;
+    margin: 4px 0 4px 12px !important;
+    padding-left: 10px !important;
+    border-left: 1px solid var(--border);
+}
+
+nav .side-menu__sub.is-open {
+    display: block;
+}
+
+nav .side-menu__subitem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    transition: background .15s, color .15s;
+}
+
+nav .side-menu__subitem:hover {
+    background: var(--bg-input);
+    color: var(--text-main);
+}
+
+nav .side-menu__subitem.is-active {
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+nav .side-menu__count {
+    min-width: 22px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--bg-input);
+    font-size: 12px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+nav .side-menu__empty {
+    padding: 8px 12px;
+    font-size: 14px;
+    color: var(--text-muted);
 }
 
 
@@ -503,7 +752,7 @@ body.antialiased * {
 
 /* центр экрана */
 body.antialiased {
-    background: #1a1f26 !important;
+    background: var(--bg-input) !important;
     min-height: 100vh;
 }
 
@@ -519,8 +768,8 @@ body.antialiased .min-h-screen {
 body.antialiased .w-full.sm\:max-w-md {
     width: 100% !important;
     max-width: 420px !important;
-    background: #0f1318 !important;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border);
     border-radius: 14px;
     padding: 28px !important;
 }
@@ -541,16 +790,16 @@ body.antialiased svg {
 
 /* инпуты */
 body.antialiased input {
-    background: #1a1f26 !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
-    color: #e5e7eb !important;
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border-strong) !important;
+    color: var(--text-main) !important;
 }
 
 /* кнопка логина */
 body.antialiased button {
-    background: #2aa7ff !important;
+    background: var(--accent) !important;
     border: none !important;
-    color: #fff !important;
+    color: var(--on-accent) !important;
 }
 
 /* =========================
@@ -591,12 +840,12 @@ body.antialiased .flex.items-center.justify-end {
 /* ссылка "Forgot your password?" */
 body.antialiased a[href*="password"] {
     font-size: 14px;
-    color: #9ca3af;
+    color: var(--text-muted);
     text-decoration: none;
 }
 
 body.antialiased a[href*="password"]:hover {
-    color: #e5e7eb;
+    color: var(--text-main);
     text-decoration: underline;
 }
 
@@ -621,7 +870,7 @@ body.antialiased label {
     display: block;
     margin-bottom: 6px;
     font-size: 14px;
-    color: #9ca3af;
+    color: var(--text-muted);
 }
 
 /* input */
@@ -645,7 +894,7 @@ body.antialiased .block.mt-4 {
 /* кнопка профиля */
 nav button.inline-flex.items-center {
     background: transparent !important;
-    border: 1px solid rgba(255,255,255,0.12) !important;
+    border: 1px solid var(--border-strong) !important;
     border-radius: 999px !important;
 
     padding: 6px 12px !important;
@@ -656,7 +905,7 @@ nav button.inline-flex.items-center {
     gap: 6px !important;
 
     font-size: 14px !important;
-    color: #e5e7eb !important;
+    color: var(--text-main) !important;
 }
 
 /* убираем круг */
@@ -669,8 +918,8 @@ nav button.inline-flex.items-center::after {
 nav button.inline-flex.items-center svg {
     width: 14px;
     height: 14px;
-    fill: #ffffff !important;
-    color: #ffffff !important;
+    fill: var(--text-main) !important;
+    color: var(--text-main) !important;
     opacity: 1 !important;
 }
 
@@ -684,8 +933,8 @@ nav [x-show] {
     right: 0;
     top: calc(100% + 8px);
 
-    background: #0f1318;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 12px;
 
     min-width: 160px;
@@ -699,12 +948,12 @@ nav [x-show] a {
     display: block;
     padding: 8px 14px;
     font-size: 14px;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* hover */
 nav [x-show] a:hover {
-    background: rgba(255,255,255,0.06);
+    background: var(--hover);
 }
 
 /* родитель кнопки */
@@ -734,7 +983,7 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     font-size: 28px;
     font-weight: 800;
     margin: 0;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* кнопка подписки */
@@ -760,21 +1009,21 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     border-radius: 999px;
     padding: 6px 14px;
     font-size: 14px;
-    background: #1a1f26;
-    border: 1px solid rgba(255,255,255,.12);
-    color: #e5e7eb;
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
+    color: var(--text-main);
 }
 
 /* активная вкладка */
 .container.col-md-8 > .mb-3 .btn-primary {
-    background: #2aa7ff !important;
+    background: var(--accent) !important;
     border-color: transparent !important;
-    color: #fff !important;
+    color: var(--on-accent) !important;
 }
 
 /* hover */
 .container.col-md-8 > .mb-3 .btn:hover {
-    background: rgba(255,255,255,.08);
+    background: var(--border);
 }
 
 /* =========================
@@ -786,26 +1035,26 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     font-size: 26px;
     font-weight: 800;
     margin: 0 0 18px;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 .container.col-md-8 h2 {
     font-size: 20px;
     font-weight: 700;
     margin: 24px 0 14px;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* обычный текст */
 .container.col-md-8 p {
-    color: rgba(229,231,235,.85);
+    color: var(--text-soft);
     font-size: 15px;
 }
 
 /* разделитель */
 .container.col-md-8 hr {
     border: none;
-    border-top: 1px solid rgba(255,255,255,.08);
+    border-top: 1px solid var(--border);
     margin: 20px 0;
 }
 
@@ -815,12 +1064,12 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 ========================= */
 
 .container.col-md-8 div[style*="border"] {
-    background: #0f1318;
-    border: 1px solid rgba(255,255,255,.10) !important;
+    background: var(--bg-card);
+    border: 1px solid var(--border-strong) !important;
     border-radius: 16px;
     padding: 18px 18px;
     margin-bottom: 16px !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    box-shadow: var(--shadow-card);
 }
 
 /* заголовок поста */
@@ -828,14 +1077,14 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     font-size: 18px;
     font-weight: 750;
     margin: 0 0 8px;
-    color: #2aa7ff;
+    color: var(--accent);
 }
 
 /* текст поста */
 .container.col-md-8 div[style*="border"] p {
     margin: 0 0 12px;
     line-height: 1.55;
-    color: rgba(229,231,235,.85);
+    color: var(--text-soft);
 }
 
 /* мета-информация */
@@ -844,7 +1093,7 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     gap: 14px;
     flex-wrap: wrap;
     font-size: 13px;
-    color: rgba(229,231,235,.6);
+    color: var(--text-faint);
 }
 
 /* PROFILE POST: bigger card + bigger padding (CSS only) */
@@ -885,7 +1134,7 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 .container.col-md-8 > .card:not(:last-child) {
     margin-bottom: 24px;
     padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid var(--border);
 }
 
 /* убираем стандартную рамку карточек ТОЛЬКО в профиле */
@@ -899,8 +1148,8 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 ========================= */
 
 .container.col-md-8 .card {
-    background: #0f1318;
-    border: 1px solid rgba(255,255,255,.08);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 16px;
 }
 
@@ -924,13 +1173,13 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     font-size: 28px;
     font-weight: 800;
     margin-bottom: 24px;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* карточка формы */
 /* .layout .content form {
-    background: #0f1318;
-    border: 1px solid rgba(255,255,255,0.08);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 18px;
     padding: 28px 30px 32px;
 } */
@@ -945,7 +1194,7 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: #9ca3af;
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 
@@ -953,12 +1202,12 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 .layout .content form input[type="text"],
 .layout .content form textarea {
     width: 100%;
-    background: #20262f;
-    border: 1px solid rgba(255,255,255,0.12);
+    background: var(--bg-input);
+    border: 1px solid var(--border-strong);
     border-radius: 12px;
     padding: 12px 14px;
     font-size: 15px;
-    color: #e5e7eb;
+    color: var(--text-main);
     outline: none;
 }
 
@@ -972,14 +1221,14 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 /* focus */
 .layout .content form input:focus,
 .layout .content form textarea:focus {
-    border-color: #2aa7ff;
+    border-color: var(--accent);
 }
 
 /* =========================
    TAGS
 ========================= */
 
-.layout .content form > div:nth-child(2) {
+.layout .content form > .form-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 10px 16px;
@@ -987,17 +1236,17 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 
 /* чекбокс + текст */
 .layout .content form input[type="checkbox"] {
-    accent-color: #2aa7ff;
+    accent-color: var(--accent);
     margin-right: 6px;
 }
 
 /* label тега */
-.layout .content form > div:nth-child(2) label {
+.layout .content form > .form-tags label {
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: 14px;
-    color: #e5e7eb;
+    color: var(--text-main);
     margin-bottom: 0;
 }
 
@@ -1007,13 +1256,13 @@ nav .sm\:flex.sm\:items-center.sm\:ms-6 {
 
 .layout .content form button[type="submit"] {
     margin-top: 6px;
-    background: #2aa7ff;
+    background: var(--accent);
     border: none;
     border-radius: 999px;
     padding: 10px 22px;
     font-size: 15px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--on-accent);
     cursor: pointer;
 }
 
@@ -1056,7 +1305,7 @@ form[action*="comments"] button {
 .comment .comment {
     margin-left: 28px;
     padding-left: 16px;
-    border-left: 1px solid rgba(255,255,255,0.08);
+    border-left: 1px solid var(--border);
 }
 
 /* текст комментария */
@@ -1125,7 +1374,7 @@ form[action*="like"] button {
 .card + .card {
     margin-top: 20px;
     padding-top: 16px;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid var(--border);
 }
 
 
@@ -1138,13 +1387,13 @@ form[action*="like"] button {
 .comment-header strong {
     font-size: 14px;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* время */
 .comment-header small {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-muted);
 }
 
 /* =========================
@@ -1161,12 +1410,12 @@ form[action*="like"] button {
     padding: 0 !important;
 
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-muted);
     cursor: pointer;
 }
 
 .comment-delete button:hover {
-    color: #ef4444;
+    color: var(--danger);
     text-decoration: underline;
 }
 
@@ -1201,13 +1450,13 @@ form[action*="like"] button {
 .comment-header strong {
     font-size: 14px;
     font-weight: 600;
-    color: #e5e7eb;
+    color: var(--text-main);
 }
 
 /* время */
 .comment-header small {
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--text-muted);
 }
 
 /* форма удаления — ВАЖНО */
@@ -1228,7 +1477,7 @@ form[action*="like"] button {
     margin: 0 !important;
 
     font-size: 12px;
-    color: #ef4444;
+    color: var(--danger);
     cursor: pointer;
 }
 
@@ -1267,14 +1516,14 @@ form[action*="like"] button {
 
 /* сама кнопка "Удалить пост" */
 .container.col-md-8 div[style*="border"] > form > button {
-    background: #2aa7ff !important;
+    background: var(--accent) !important;
     border: none !important;
     border-radius: 999px;
     padding: 8px 18px;
 
     font-size: 14px;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--on-accent);
 
     cursor: pointer;
 }
@@ -1306,6 +1555,464 @@ form[action*="like"] button {
   right: 0;
   bottom: -12px;          /* расстояние от карточки */
   height: 1px;
-  background: rgba(255,255,255,0.08);
+  background: var(--border);
 }
 
+
+/* =========================
+   LIKE (сердечко)
+========================= */
+
+/* .layout .content form button[type="submit"] выше красит все сабмиты в акцентную кнопку — перебиваем */
+.layout .content form button.like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 6px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: color .15s, background .15s, border-color .15s;
+}
+
+.layout .content form button.like-btn:hover {
+    opacity: 1;
+    color: var(--like);
+    border-color: var(--like);
+    background: var(--like-soft);
+}
+
+.layout .content form button.like-btn.is-liked {
+    color: var(--like);
+    border-color: transparent;
+    background: var(--like-soft);
+}
+
+.like-btn__heart {
+    width: 18px;
+    height: 18px;
+    fill: transparent;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linejoin: round;
+    transition: fill .15s, transform .15s;
+}
+
+.like-btn:hover .like-btn__heart {
+    transform: scale(1.12);
+}
+
+.like-btn.is-liked .like-btn__heart {
+    fill: currentColor;
+}
+
+.like-btn:active .like-btn__heart {
+    transform: scale(0.9);
+}
+
+/* "Удалить" у комментария: .layout .content form button[type="submit"] перебивал цвет и фон */
+.layout .content form.comment-delete button[type="submit"] {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-muted);
+}
+
+.layout .content form.comment-delete button[type="submit"]:hover {
+    color: var(--danger);
+    opacity: 1;
+}
+
+/* =========================
+   ЧЕРНОВИКИ
+========================= */
+
+/* подпись "Теги" — отдельной строкой над чекбоксами */
+.layout .content form > .form-tags > label:first-child {
+    flex-basis: 100%;
+    color: var(--text-muted);
+    margin-bottom: 0;
+}
+
+.layout .content form > .form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.layout .content form button[type="submit"].btn-draft {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-main);
+}
+
+.layout .content form button[type="submit"].btn-draft:hover {
+    opacity: 1;
+    background: var(--hover);
+}
+
+.form-errors {
+    padding: 12px 16px;
+    border: 1px solid var(--danger);
+    border-radius: 12px;
+    background: var(--danger-soft);
+    color: var(--danger-text);
+    font-size: 14px;
+}
+
+.form-errors p {
+    margin: 0;
+}
+
+.flash-success {
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 14px;
+}
+
+.draft-card {
+    background: var(--bg-card);
+    border: 1px dashed var(--border-strong);
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 16px;
+}
+
+.draft-card h3 {
+    margin: 0 0 8px;
+    font-size: 18px;
+}
+
+.draft-card p {
+    margin: 0 0 12px;
+    line-height: 1.55;
+    color: var(--text-soft);
+}
+
+.draft-card small {
+    font-size: 13px;
+    color: var(--text-faint);
+}
+
+.draft-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.draft-card__actions form {
+    margin: 0;
+}
+
+.layout .content .draft-card .draft-card__btn {
+    display: inline-block;
+    margin: 0;
+    padding: 6px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: transparent;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+}
+
+.layout .content .draft-card .draft-card__btn:hover {
+    opacity: 1;
+    background: var(--hover);
+}
+
+.layout .content .draft-card .draft-card__btn--primary {
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.layout .content .draft-card .draft-card__btn--primary:hover {
+    background: var(--accent);
+    opacity: .9;
+}
+
+.layout .content .draft-card .draft-card__btn--danger:hover {
+    border-color: var(--danger);
+    background: transparent;
+    color: var(--danger);
+}
+
+.dropdown-count {
+    display: inline-block;
+    min-width: 20px;
+    margin-left: 6px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    font-size: 12px;
+    text-align: center;
+    color: var(--accent);
+}
+
+/* =========================
+   ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ
+========================= */
+
+nav .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    transition: color .2s, background .2s, transform .3s;
+}
+
+nav .theme-toggle:hover {
+    background: var(--hover);
+    color: var(--text-main);
+}
+
+nav .theme-toggle:active {
+    transform: rotate(-30deg);
+}
+
+nav .theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+nav .theme-toggle__sun,
+:root[data-theme="dark"] nav .theme-toggle__moon {
+    display: none;
+}
+
+:root[data-theme="dark"] nav .theme-toggle__sun {
+    display: block;
+}
+
+/* =========================
+   КОММЕНТАРИИ: КАРТОЧКИ И ВЕТКИ
+========================= */
+
+[x-cloak] {
+    display: none !important;
+}
+
+.comment-thread {
+    margin-top: 12px;
+}
+
+/* карточка одного комментария */
+.comment-box {
+    padding: 12px 14px;
+    border: 1px solid var(--border-strong);
+    border-radius: 12px;
+    background: var(--bg-card);
+    scroll-margin-top: 80px;
+}
+
+/* подсветка комментария, к которому вернулись после реакции */
+.comment-box:target {
+    border-color: var(--accent);
+}
+
+.comment-box .comment-header,
+.comment-box .comment-header:first-of-type {
+    margin: 0 0 6px;
+}
+
+.comment-body {
+    margin: 0 0 10px;
+    line-height: 1.55;
+    color: var(--text-main);
+    white-space: pre-line;
+}
+
+/* ответы: сдвиг и вертикальная линия ветки */
+.comment-replies {
+    margin-left: 14px;
+    padding-left: 14px;
+    border-left: 2px solid var(--border);
+}
+
+.comment-box .comment-reply {
+    margin: 10px 0 0;
+}
+
+/* =========================
+   РЕАКЦИИ-СТИКЕРЫ
+========================= */
+
+.reactions,
+.reactions__form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+/* специфичность выше, чем у .layout .content form button[type="submit"] */
+.layout .content form.reactions__form button.reaction-chip,
+.reaction-chip.is-readonly {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 28px;
+    margin: 0;
+    padding: 0 10px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg-input);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background .15s, border-color .15s, transform .1s;
+}
+
+.reaction-chip.is-readonly {
+    cursor: default;
+}
+
+.layout .content form.reactions__form button.reaction-chip:hover {
+    opacity: 1;
+    border-color: var(--accent);
+}
+
+.layout .content form.reactions__form button.reaction-chip:active {
+    transform: scale(0.94);
+}
+
+/* моя реакция */
+.layout .content form.reactions__form button.reaction-chip.is-mine {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.reaction-chip__emoji {
+    font-size: 15px;
+}
+
+/* серая кнопка "добавить стикер" */
+/* .layout .content form > div даёт блокам формы margin-bottom — обнуляем */
+.layout .content form.reactions__form > .reaction-picker {
+    position: relative;
+    margin: 0;
+}
+
+.reactions .reaction-add {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg-input);
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.reactions .reaction-add:hover,
+.reactions .reaction-add.is-open {
+    color: var(--text-main);
+    border-color: var(--text-muted);
+    background: var(--bg-input);
+}
+
+.reaction-add svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+}
+
+.reaction-add__plus {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* всплывающий выбор стикера */
+.reaction-picker__menu {
+    position: absolute;
+    /* открывается справа от кнопки, чтобы не закрывать текст комментария */
+    left: calc(100% + 6px);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    display: flex;
+    gap: 2px;
+    padding: 5px;
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    background: var(--bg-card);
+    box-shadow: var(--shadow-card);
+}
+
+.layout .content form.reactions__form button.reaction-picker__item {
+    width: 34px;
+    height: 34px;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: transform .12s, background .12s;
+}
+
+.layout .content form.reactions__form button.reaction-picker__item:hover {
+    opacity: 1;
+    background: var(--hover);
+    transform: scale(1.2);
+}
+
+.layout .content form.reactions__form button.reaction-picker__item.is-mine {
+    background: var(--accent-soft);
+}
+
+/* анимация стикера после клика (без перезагрузки) */
+@keyframes reaction-bump {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.18); }
+    100% { transform: scale(1); }
+}
+
+.layout .content form.reactions__form button.reaction-chip.is-bumped {
+    animation: reaction-bump .28s ease-out;
+}
+
+.like-btn.is-bumped .like-btn__heart {
+    animation: reaction-bump .3s ease-out;
+}

@@ -1,11 +1,11 @@
-# ForMinds — Умный Интернет-Форум
+# Talkspace - Интернет-Форум
 
 [![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
 [![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
 
-**ForMinds** — современный веб-форум для обмена мнениями, идеями и знаниями. Платформа создана для комфортного общения по различным темам, от политики до видеоигр.
+**Talkspace** — современный веб-форум для обмена мнениями, идеями и знаниями. Платформа создана для комфортного общения по различным темам, от политики до видеоигр.
 
 ## Основные возможности
 
@@ -49,7 +49,8 @@
 | **Laravel 12** | Фреймворк: маршруты, контроллеры, модели, миграции, сессии |
 | **Laravel Breeze** | Регистрация, вход и восстановление пароля |
 | **Backpack for Laravel** (CRUD + тема Tabler) | Админ-панель для управления пользователями и постами |
-| **PostgreSQL 16** | База данных |
+| **MySQL 8.4** | База данных |
+| **phpMyAdmin** | Веб-интерфейс для просмотра и редактирования БД |
 | **Blade** | Шаблоны HTML-страниц |
 | **CSS** | Оформление интерфейса |
 | **Alpine.js** | Интерактивные элементы: выпадающие меню, модальные окна |
@@ -60,7 +61,7 @@
 
 ## 🚀 Запуск проекта
 
-Проект запускается в Docker: PHP, PostgreSQL и все зависимости ставятся внутри контейнеров. Устанавливать PHP, Composer, Node.js или базу данных на компьютер **не нужно**.
+Проект запускается в Docker: PHP, MySQL, phpMyAdmin и все зависимости ставятся внутри контейнеров. Устанавливать PHP, Composer, Node.js или базу данных на компьютер **не нужно**.
 
 ### Шаг 1. Установка WSL (только Windows)
 
@@ -123,6 +124,7 @@ docker compose logs -f app
 |-----|-------|
 | Форум | http://localhost:8000 |
 | Админ-панель | http://localhost:8000/admin |
+| phpMyAdmin (база данных) | http://localhost:8080 |
 
 **Тестовые учётные записи:**
 
@@ -146,21 +148,23 @@ docker compose logs -f app
 
 ### Подключение к базе данных (по желанию)
 
-PostgreSQL доступен с компьютера, например через DBeaver или PhpStorm:
+Проще всего смотреть базу через **phpMyAdmin**: http://localhost:8080 — вход выполняется автоматически.
+
+Также MySQL доступен с компьютера, например через DBeaver или PhpStorm:
 
 | Параметр | Значение |
 |----------|----------|
 | Host | `localhost` |
-| Port | `5432` |
+| Port | `3307` |
 | Database | `forum` |
-| User | `forum` |
-| Password | `secret` |
+| User | `forum` (или `root`) |
+| Password | `secret` (для `root` — `root`) |
 
 ### Возможные проблемы
 
 - **`docker: command not found` / `docker` не является командой** — Docker Desktop не запущен или компьютер не перезагружен после установки.
 - **Docker Desktop пишет про WSL или виртуализацию** — выполните в терминале от администратора `wsl --update` и перезагрузитесь. Если не помогло — включите виртуализацию (Intel VT-x / AMD SVM) в BIOS.
-- **`port is already allocated` (порт 8000 или 5432 занят)** — остановите программу, которая занимает порт (например, локальный PostgreSQL), или поменяйте левую часть порта в `docker-compose.yml`, например `"8080:8000"`, и откройте http://localhost:8080.
+- **`port is already allocated` (порт 8000, 8080 или 3307 занят)** — остановите программу, которая занимает порт (например, локальный MySQL или Apache из XAMPP), или поменяйте левую часть порта в `docker-compose.yml`, например `"8001:8000"`, и откройте http://localhost:8001.
 - **Сайт не открывается сразу после запуска** — подождите 30–60 секунд и проверьте логи: `docker compose logs app`.
 - **Ошибка 500 на сайте** — посмотрите лог Laravel: `docker compose exec app cat storage/logs/laravel.log`.
 

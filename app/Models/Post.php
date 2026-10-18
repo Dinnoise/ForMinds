@@ -13,7 +13,22 @@ class Post extends Model
 {
     use CrudTrait;
     use HasFactory;
-    protected $fillable = ['title', 'body', 'user_id'];
+    protected $fillable = ['title', 'body', 'user_id', 'is_draft'];
+
+    protected $casts = [
+        'is_draft' => 'boolean',
+    ];
+
+    // Опубликованные посты: всё, что видят другие пользователи
+    public function scopePublished($query)
+    {
+        return $query->where('is_draft', false);
+    }
+
+    public function scopeDrafts($query)
+    {
+        return $query->where('is_draft', true);
+    }
 
     public function user()
     {
@@ -29,7 +44,7 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)
         ->whereNull('parent_id')
-        ->with('user', 'replies');
+        ->with('user', 'reactions', 'replies');
     }
 
     public function likes()
